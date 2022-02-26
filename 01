@@ -1,0 +1,39 @@
+import java.util.*;
+ 
+    class TestClass {
+        public static void main(String args[] ) throws Exception {
+            Scanner sc = new Scanner(System.in);
+ 
+            int n = sc.nextInt();
+            int c = sc.nextInt();
+            int[] val = new int[n];
+            int[] wt = new int[n];
+            for(int i=0;i<n;++i)val[i]=sc.nextInt();
+            for(int i=0;i<n;++i)wt[i]=sc.nextInt();
+ 
+            int[][] dp = new int[n][c+1];
+            //base case  
+            dp[0][wt[0]]=val[0];
+ 
+            //dp[i][j]= max value that we can pick from [0..i] such that their sum is exactly j
+            for(int i=1;i<n;++i){
+                for(int j=1;j<=c;++j){//why are we comparing index with weight 
+                    dp[i][j]=dp[i-1][j];
+                    if(j-wt[i]>=0)dp[i][j]=Math.max(dp[i][j], dp[i-1][j-wt[i]]+ val[i]);
+                }
+            }
+            //ans = dp[n-1][c]??
+            //or largest value in dp[n-1][*]
+            int ans=0;
+            for(int j=1;j<=c;++j)ans=Math.max(ans, dp[n-1][j]);
+ 
+            System.out.println(ans);
+ 
+            //as we taken math.max we don't need to compare 
+            // -> if my defination was
+            //  dp[i][j]= max value that we can pick from [0..i] such that their sum is <= j 
+ 
+        }
+ 
+    }
+    
